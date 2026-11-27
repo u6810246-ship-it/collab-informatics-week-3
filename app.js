@@ -47,7 +47,7 @@ function renderPatients() {
 
     const name = document.createElement("h3");
     // TODO 7: Read the name element and assign it with textContent.
-    name.textContent = "Patient name";
+    name.textContent = patient.querySelector("name").textContent;
 
     const details = document.createElement("p");
     const ward = patient.querySelector("ward").textContent;
