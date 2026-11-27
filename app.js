@@ -9,11 +9,11 @@ async function loadRegistry() {
   const xmlText = await response.text();
 
   // TODO 3: Create a DOMParser and parse xmlText as "application/xml".
-  const parser = null;
-  xmlDocument = null;
+  const parser = new DOMParser();
+  xmlDocument = parser.parseFromString(xmlText, "application/xml");
 
   // TODO 4: Find the parsererror element. Show its text and stop if it exists.
-  const parseError = null;
+  const parseError = xmlDocument.querySelector("parsererror");
   if (parseError) {
     errorMessage.hidden = false;
     errorMessage.textContent = "XML error: " + parseError.textContent;
@@ -28,7 +28,7 @@ function renderPatients() {
   list.replaceChildren();
 
   // TODO 5: Select all patient elements from xmlDocument.
-  const patients = [];
+  const patients = xmlDocument.querySelectorAll("patient");
 
   patients.forEach((patient) => {
     const status = patient.getAttribute("status");
@@ -38,7 +38,9 @@ function renderPatients() {
     //The logic means: If the filter is all, do not skip anyone. If the filter is critical, skip stable patients.
     //If the filter is stable, skip critical patients.
     //he return skips only the current patient in the forEach() loop.
-
+    if (filter.value !== "all" && status !== filter.value) {
+    return;
+}
     const card = document.createElement("article");
     card.className = "patient-card";
     card.dataset.status = status;
